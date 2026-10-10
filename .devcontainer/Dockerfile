@@ -62,11 +62,12 @@ USER developer
 # RUN git clone https://github.com/PX4/PX4-Autopilot.git ~/PX4-Autopilot --recursive -b main && \
 #     echo developer | sudo -S bash /home/developer/PX4-Autopilot/Tools/setup/ubuntu.sh
 
-COPY --chown=developer:root . /home/developer/ros2_ws
 WORKDIR /home/developer/ros2_ws
 
 
 RUN echo ". /opt/ros/$ROS_DISTRO/setup.bash" >> ~/.bashrc \
-    && echo ". /home/developer/ros2_ws/install/setup.bash" >> ~/.bashrc
+    && echo ". /home/developer/ros2_ws/install/setup.bash" >> ~/.bashrc \
+    && echo "alias _cb='/home/developer/ros2_ws/src/.devcontainer/build.sh'" >> ~/.bashrc \
+    && echo "alias _ct='/home/developer/ros2_ws/src/.devcontainer/test.sh'" >> ~/.bashrc
 
 CMD [ "sleep", "infinity" ]

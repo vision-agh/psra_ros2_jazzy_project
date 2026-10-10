@@ -36,3 +36,6 @@ models/*
 # worlds: only .sdf files are tracked
 simple_example/worlds/*
 !simple_example/worlds/*.sdf
+
+# other
+local_files

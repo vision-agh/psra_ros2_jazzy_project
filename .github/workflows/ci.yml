@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build devcontainer image
+        run: docker build -t ros2-ci .devcontainer
+
+      # Same layout as compose.yaml: the repo is mounted at ros2_ws/src,
+      # and build.sh / test.sh expect to run from /home/developer/ros2_ws.
+      - name: Setup, build and test
+        run: |
+          docker run --rm \
+            -v "$GITHUB_WORKSPACE:/home/developer/ros2_ws/src" \
+            ros2-ci \
+            bash -c "src/.devcontainer/setup.sh && src/.devcontainer/build.sh && src/.devcontainer/test.sh"
